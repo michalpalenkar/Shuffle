@@ -469,7 +469,7 @@ var computedSize = function computedSize() {
     }
 };
 
-var COMPUTED_SIZE_INCLUDES_PADDING = ret = computedSize();
+var ret = computedSize();
 
 /**
  * Retrieve the computed style for an element, parsed as a float.
@@ -487,9 +487,9 @@ function getNumberStyle(element, style) {
   var value = getNumber(styles[style]);
 
   // Support IE<=11 and W3C spec.
-  if (!COMPUTED_SIZE_INCLUDES_PADDING && style === 'width') {
+  if (!ret && style === 'width') {
     value += getNumber(styles.paddingLeft) + getNumber(styles.paddingRight) + getNumber(styles.borderLeftWidth) + getNumber(styles.borderRightWidth);
-  } else if (!COMPUTED_SIZE_INCLUDES_PADDING && style === 'height') {
+  } else if (!ret && style === 'height') {
     value += getNumber(styles.paddingTop) + getNumber(styles.paddingBottom) + getNumber(styles.borderTopWidth) + getNumber(styles.borderBottomWidth);
   }
 

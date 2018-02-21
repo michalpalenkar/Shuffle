@@ -12,4 +12,6 @@ const computedSize = () => {
     }
 }
 
-export default ret = computedSize();
+const ret = computedSize()
+
+export default ret;

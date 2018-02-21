@@ -1,5 +1,4 @@
 import getNumber from './get-number';
-import COMPUTED_SIZE_INCLUDES_PADDING from './computed-size';
 
 /**
  * Retrieve the computed style for an element, parsed as a float.
@@ -16,6 +15,17 @@ export default function getNumberStyle(
   styles = window.getComputedStyle(element, null),
 ) {
   let value = getNumber(styles[style]);
+
+  const el = document.body || document.documentElement;
+
+  const e = document.createElement('div');
+  e.style.cssText = 'width:10px;padding:2px;box-sizing:border-box;';
+  el.appendChild(e);
+
+  const { width } = window.getComputedStyle(e, null);
+  const COMPUTED_SIZE_INCLUDES_PADDING = width === '10px';
+
+  el.removeChild(e);
 
   // Support IE<=11 and W3C spec.
   if (!COMPUTED_SIZE_INCLUDES_PADDING && style === 'width') {

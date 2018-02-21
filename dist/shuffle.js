@@ -280,49 +280,49 @@ var Point = function () {
 }();
 
 var Rect = function () {
-  /**
-   * Class for representing rectangular regions.
-   * https://github.com/google/closure-library/blob/master/closure/goog/math/rect.js
-   * @param {number} x Left.
-   * @param {number} y Top.
-   * @param {number} w Width.
-   * @param {number} h Height.
-   * @param {number} id Identifier
-   * @constructor
-   */
-  function Rect(x, y, w, h, id) {
-    classCallCheck(this, Rect);
+    /**
+     * Class for representing rectangular regions.
+     * https://github.com/google/closure-library/blob/master/closure/goog/math/rect.js
+     * @param {number} x Left.
+     * @param {number} y Top.
+     * @param {number} w Width.
+     * @param {number} h Height.
+     * @param {number} id Identifier
+     * @constructor
+     */
+    function Rect(x, y, w, h, id) {
+        classCallCheck(this, Rect);
 
-    this.id = id;
+        this.id = id;
 
-    /** @type {number} */
-    this.left = x;
+        /** @type {number} */
+        this.left = x;
 
-    /** @type {number} */
-    this.top = y;
+        /** @type {number} */
+        this.top = y;
 
-    /** @type {number} */
-    this.width = w;
+        /** @type {number} */
+        this.width = w;
 
-    /** @type {number} */
-    this.height = h;
-  }
-
-  /**
-   * Returns whether two rectangles intersect.
-   * @param {Rect} a A Rectangle.
-   * @param {Rect} b A Rectangle.
-   * @return {boolean} Whether a and b intersect.
-   */
-
-
-  createClass(Rect, null, [{
-    key: "intersects",
-    value: function intersects(a, b) {
-      return a.left < b.left + b.width && b.left < a.left + a.width && a.top < b.top + b.height && b.top < a.top + a.height;
+        /** @type {number} */
+        this.height = h;
     }
-  }]);
-  return Rect;
+
+    /**
+     * Returns whether two rectangles intersect.
+     * @param {Rect} a A Rectangle.
+     * @param {Rect} b A Rectangle.
+     * @return {boolean} Whether a and b intersect.
+     */
+
+
+    createClass(Rect, null, [{
+        key: "intersects",
+        value: function intersects(a, b) {
+            return a.left < b.left + b.width && b.left < a.left + a.width && a.top < b.top + b.height && b.top < a.top + a.height;
+        }
+    }]);
+    return Rect;
 }();
 
 var Classes = {
@@ -452,17 +452,24 @@ ShuffleItem.Scale = {
   HIDDEN: 0.001
 };
 
-var element = document.body || document.documentElement;
-var e = document.createElement('div');
-e.style.cssText = 'width:10px;padding:2px;box-sizing:border-box;';
-element.appendChild(e);
+var computedSize = function computedSize() {
+    if (typeof document !== 'undefined') {
+        var element = document.body || document.documentElement;
+        var e = document.createElement('div');
+        e.style.cssText = 'width:10px;padding:2px;box-sizing:border-box;';
+        element.appendChild(e);
 
-var _window$getComputedSt = window.getComputedStyle(e, null);
-var width = _window$getComputedSt.width;
+        var _window$getComputedSt = window.getComputedStyle(e, null),
+            width = _window$getComputedSt.width;
 
-var ret = width === '10px';
+        element.removeChild(e);
+        return width === '10px';
+    } else {
+        return false;
+    }
+};
 
-element.removeChild(e);
+var COMPUTED_SIZE_INCLUDES_PADDING = ret = computedSize();
 
 /**
  * Retrieve the computed style for an element, parsed as a float.
@@ -480,9 +487,9 @@ function getNumberStyle(element, style) {
   var value = getNumber(styles[style]);
 
   // Support IE<=11 and W3C spec.
-  if (!ret && style === 'width') {
+  if (!COMPUTED_SIZE_INCLUDES_PADDING && style === 'width') {
     value += getNumber(styles.paddingLeft) + getNumber(styles.paddingRight) + getNumber(styles.borderLeftWidth) + getNumber(styles.borderRightWidth);
-  } else if (!ret && style === 'height') {
+  } else if (!COMPUTED_SIZE_INCLUDES_PADDING && style === 'height') {
     value += getNumber(styles.paddingTop) + getNumber(styles.paddingBottom) + getNumber(styles.borderTopWidth) + getNumber(styles.borderBottomWidth);
   }
 
